@@ -119,3 +119,14 @@ class Trace:
 
     def get(self, tracker_id: int) -> np.ndarray:
         return self.xy[self.tracker_id == tracker_id]
+    
+    def get_movement(self, tracker_id: int) -> float:
+        positions = self.get(tracker_id)
+        if len(positions) < 2:
+            return 0.0  # No movement if there are not at least two positions
+
+        # Calculate the distance between the last and second-last positions
+        latest_position = positions[0]
+        oldest_position = positions[-1]
+        movement = np.linalg.norm(latest_position - oldest_position)
+        return movement
